@@ -6,12 +6,12 @@ class Snake
     {
         BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
         int i,j,k,a,b,c;
-        int wd=30;
-        int l=80;
+        int wd=20;
+        int l=50;
         char ch='w',chn='p';
         Random r= new Random();
-        int obx = 1+r.nextInt(wd-1);
-        int oby = 1+r.nextInt(l-1);
+        int obx = 1+r.nextInt(wd-2);
+        int oby = 1+r.nextInt(l-2);
         //snake maker
         int snx[]=new int[100];
         int sny[]=new int[100];
@@ -21,11 +21,12 @@ class Snake
         sy=sny[0]=l/2;
         a=0;
         int t=0;
+        int game=0;
         System.out.println();
         while(ch!='e')
         {
             // new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            System.out.println("\f");
+            System.out.print("\f");
 
             if(chn!='\n')
             {
@@ -60,25 +61,45 @@ class Snake
             a++;
             snx[0]=sx;
             sny[0]=sy;
+            for(int y=1;y<=sl;y++)
+            {
+                if(snx[0]==snx[y] && sny[0]==sny[y])
+                {
+                    System.out.println("********GAME OVER***********");
+                    game=1;
+                }
+            }
             for(i=0;i<l;i++)
             {
                 System.out.print("#");
             }
             System.out.println();
-            k=0;
+            k=1;
+            int f=0;
             for(i=0;i<wd;i++)
             {
                 for(j=0;j<l;j++)
                 {
-                    if(snx[0]==i && sny[0]==j)
+                    f=0;
+                    if(k<=sl)
+                    {
+                        for(int y=1;y<=sl;y++)
+                        {
+                            if(snx[y]==i && sny[y]==j)
+                            {
+                                System.out.print("o");
+                                f=1;
+                                k++;
+                            }
+                        }
+                    }
+                    if(f==1)
+                    {
+                    } 
+                    else if(snx[0]==i && sny[0]==j)
                     {
                         System.out.print("O");
-                        k++;                        
-                    }
-                    else if(snx[k]==i && sny[k]==j && k<=sl)
-                    {
-                        System.out.print("o");
-                        k++;                        
+                        f=1;
                     }
                     else if(obx==i && oby==j)
                     {
@@ -93,10 +114,11 @@ class Snake
                         System.out.print("#");
                     }
                     else
-                        System.out.print(" ");
+                    {
+                        System.out.print(" ");    
+                    }  
                 }
                 System.out.println();
-            
             }
             for(i=0;i<l;i++)
             {
@@ -105,8 +127,8 @@ class Snake
             if(sx==obx && sy==oby)
             {
                 t=t+10;
-                obx = 1+r.nextInt(wd-1);
-                oby = 1+r.nextInt(l-1);
+                obx = 1+r.nextInt(wd-2);
+                oby = 1+r.nextInt(l-2);
                 sl++;
                 
             }
@@ -121,7 +143,7 @@ class Snake
             System.out.println("\n\nTotal score = "+t);
             
             chn=(char)in.read();
-            if(chn=='e')
+            if(chn=='e' || game==1)
             {
                 System.out.println("\nLoop runned "+a+" times");
                 break;
